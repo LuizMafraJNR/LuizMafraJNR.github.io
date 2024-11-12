@@ -112,9 +112,9 @@
                     <td>${player.name}</td>
                     <td>${player.score}</td>
                     <td>
-                        <button class="btn btn-success btn-sm-custom" onclick="increaseScore(${index})">Adicionar Ponto</button>
-                        <button class="btn btn-warning btn-sm-custom" onclick="decreaseScore(${index})">Diminuir Ponto</button>
-                        <button class="btn btn-danger btn-sm-custom" onclick="removePlayer(${index})">Remover</button>
+                        <button class="btn btn-success btn-sm-custom" onclick="increaseScore(${index})">+</button>
+                        <button class="btn btn-warning btn-sm-custom" onclick="decreaseScore(${index})">-</button>
+                        <button class="btn btn-danger btn-sm-custom" onclick="removePlayer(${index})">X</button>
                     </td>
                 `;
                 tbody.appendChild(row);
