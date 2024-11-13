@@ -105,21 +105,30 @@ function updateTable() {
             <td>${player.name}</td>
             <td>${player.score}</td>
             <td>
-                <button class="btn btn-success btn-sm-custom" onclick="increaseScore(${index})">+</button>
-                <button class="btn btn-warning btn-sm-custom" onclick="decreaseScore(${index})">-</button>
-                <button class="btn btn-danger btn-sm-custom" onclick="removePlayer(${index})">X</button>
+                <button class="btn btn-success btn-sm-custom m-2" onclick="increaseScore(${index})">+</button>
+                <button class="btn btn-warning btn-sm-custom m-2" onclick="decreaseScore(${index})">-</button>
+                <button class="btn btn-danger btn-sm-custom m-2" onclick="removePlayer(${index})">X</button>
             </td>
         `;
         tbody.appendChild(row);
     });
 }
 
+function validateIfGameIsStarted() {
+    if(!gameStarted){
+        alert('O jogo não foi iniciado');
+        throw new Error('O jogo não foi iniciado');
+    }
+}
+
 function increaseScore(index) {
+    validateIfGameIsStarted();
     players[index].score += 1;
     updateTable();
 }
 
 function decreaseScore(index) {
+    validateIfGameIsStarted();
     if (players[index].score > 0) {
         players[index].score -= 1;
         if (players[index].score === 0) {
