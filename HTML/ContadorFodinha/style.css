@@ -1,6 +1,3 @@
-.table-responsive {
-    overflow-x: auto;
-}
 .btn-sm-custom {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
@@ -11,4 +8,33 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-top: 1rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.btn-icon.increase {
+    color: #28a745; /* Cor suave para aumentar */
+}
+
+.btn-icon.decrease {
+    color: #ffc107; /* Cor suave para diminuir */
+}
+
+.btn-icon.remove {
+    color: #dc3545; /* Cor suave para remover */
+}
+
+.btn-icon:hover {
+    color: #007bff; /* Cor ao passar o mouse */
+}
+
+.btn-icon i {
+    pointer-events: none; /* Garante que o clique seja no botão, não no ícone */
 }

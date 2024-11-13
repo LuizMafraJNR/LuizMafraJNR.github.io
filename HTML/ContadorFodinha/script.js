@@ -105,9 +105,15 @@ function updateTable() {
             <td>${player.name}</td>
             <td>${player.score}</td>
             <td>
-                <button class="btn btn-success btn-sm-custom m-2" onclick="increaseScore(${index})">+</button>
-                <button class="btn btn-warning btn-sm-custom m-2" onclick="decreaseScore(${index})">-</button>
-                <button class="btn btn-danger btn-sm-custom m-2" onclick="removePlayer(${index})">X</button>
+                <button class="btn-icon increase" onclick="increaseScore(${index})">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="btn-icon decrease" onclick="decreaseScore(${index})">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="btn-icon remove" onclick="removePlayer(${index})">
+                    <i class="fas fa-trash"></i>
+                </button>
             </td>
         `;
         tbody.appendChild(row);
@@ -145,7 +151,13 @@ function removePlayer(index) {
 }
 
 function setWinner() {
-    let winner = players.map(player => player.score)
-    .indexOf(Math.max(...players.map(player => player.score)));
-    alert(`O vencedor é ${players[winner].name} com ${players[winner].score} pontos`);
+    let maxScore = Math.max(...players.map(player => player.score));
+    let winners = players.filter(player => player.score === maxScore);
+
+    if (winners.length > 1) {
+        let winnerNames = winners.map(player => player.name).join(', ');
+        alert(`Empate entre ${winnerNames} com ${maxScore} pontos`);
+    } else {
+        alert(`O vencedor é ${winners[0].name} com ${winners[0].score} pontos`);
+    }
 }
