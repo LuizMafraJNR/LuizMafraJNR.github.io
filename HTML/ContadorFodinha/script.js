@@ -91,6 +91,10 @@ function firstToUpper(string) {
 }
 
 function updateTable() {
+    const table = document.getElementById('playerTable');
+    if(table.style.display === 'none') {
+        table.style.display = 'table';
+    }
     const tbody = document.getElementById('playerTableBody');
     tbody.innerHTML = '';
     players.forEach((player, index) => {
