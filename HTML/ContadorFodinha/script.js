@@ -105,7 +105,7 @@ function updateTable() {
             <td>${player.name}</td>
             <td>${player.score}</td>
             <td>
-                <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around flex-wrap">
                     <button class="btn-icon increase" onclick="increaseScore(${index})">
                         <i class="fas fa-plus"></i>
                     </button>

@@ -14,27 +14,34 @@
     background: none;
     border: none;
     font-size: 1.2em;
-    margin: 0 5px;
+    margin: 5px;
     cursor: pointer;
     transition: color 0.3s;
 }
 
 .btn-icon.increase {
-    color: #28a745;
+    color: #28a745; /* Cor suave para aumentar */
 }
 
 .btn-icon.decrease {
-    color: #ffc107;
+    color: #ffc107; /* Cor suave para diminuir */
 }
 
 .btn-icon.remove {
-    color: #dc3545;
+    color: #dc3545; /* Cor suave para remover */
 }
 
 .btn-icon:hover {
-    color: #007bff; 
+    color: #007bff; /* Cor ao passar o mouse */
 }
 
 .btn-icon i {
-    pointer-events: none;
+    pointer-events: none; /* Garante que o clique seja no botão, não no ícone */
+}
+
+@media (max-width: 576px) {
+    .btn-icon {
+        font-size: 1em;
+        margin: 2px;
+    }
 }
