@@ -58,7 +58,7 @@
             }
         });
 
-        document.getElementById('button-addon2').addEventListener('keypress', function(event) {
+        document.getElementById('button-addon2').addEventListener('click', function(event) {
             if (event.key === 'Enter')
             addPlayer()
         })
@@ -110,9 +110,16 @@
 
         function stopGame() {
             gameStarted = false;
+            setWinner();
             document.getElementById('startGameButton').disabled = false;
             document.getElementById('stopGameButton').style.display = 'none';
             stopCounter();
+            resetPoints();
+        }
+
+        function resetPoints() {
+            players.forEach(player => player.score = 5);
+            updateTable();
         }
 
         function startCounter() {
@@ -154,6 +161,10 @@
         function decreaseScore(index) {
             if (players[index].score > 0) {
                 players[index].score -= 1;
+                if (players[index].score === 0) {
+                    alert(players[index].name + ' foi eliminado');
+                    removePlayer(index);
+                }
             }
             updateTable();
         }
@@ -161,6 +172,13 @@
         function removePlayer(index) {
             players.splice(index, 1);
             updateTable();
+        }
+
+        function setWinner() {
+            let winner = players.map(player => player.score)
+            .indexOf(Math.max(...players.map(player => player.score)));
+            alert(`O vencedor é ${players[winner].name} com ${players[winner].score} pontos`);
+
         }
     </script>
 </body>
