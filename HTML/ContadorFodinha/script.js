@@ -41,10 +41,6 @@ function addPlayer(name) {
     const score = gameStarted ? 3 : 5;
     const player = { name: name, score: score, wins: 0 };
     players.push(player);
-    if(players.length === 3 && !canPlay) {
-        canPlay = true;
-        showTable();
-    }
     updateTable();
     clearInput();
 }
@@ -65,8 +61,7 @@ function showTable() {
     table.style.display = canShowTable ? 'block' : 'none';
 }
 
-function clearInput()
-{
+function clearInput() {
     document.getElementById('playerName').value = '';
 }
 
@@ -100,7 +95,7 @@ function updateTable() {
     tbody.innerHTML = '';
     players.forEach((player, index) => {
         const row = document.createElement('tr');
-        const formattedName= firstToUpper(player.name);
+        const formattedName = firstToUpper(player.name);
         row.innerHTML = `
             <td>${formattedName}</td>
             <td>${player.score}</td>
