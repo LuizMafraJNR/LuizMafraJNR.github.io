@@ -20,21 +20,21 @@
 }
 
 .btn-icon.increase {
-    color: #28a745; /* Cor suave para aumentar */
+    color: #28a745;
 }
 
 .btn-icon.decrease {
-    color: #ffc107; /* Cor suave para diminuir */
+    color: #ffc107;
 }
 
 .btn-icon.remove {
-    color: #dc3545; /* Cor suave para remover */
+    color: #dc3545;
 }
 
 .btn-icon:hover {
-    color: #007bff; /* Cor ao passar o mouse */
+    color: #007bff; 
 }
 
 .btn-icon i {
-    pointer-events: none; /* Garante que o clique seja no botão, não no ícone */
+    pointer-events: none;
 }

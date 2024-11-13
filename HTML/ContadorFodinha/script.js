@@ -105,15 +105,17 @@ function updateTable() {
             <td>${player.name}</td>
             <td>${player.score}</td>
             <td>
-                <button class="btn-icon increase" onclick="increaseScore(${index})">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button class="btn-icon decrease" onclick="decreaseScore(${index})">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button class="btn-icon remove" onclick="removePlayer(${index})">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <div class="d-flex justify-content-around">
+                    <button class="btn-icon increase" onclick="increaseScore(${index})">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="btn-icon decrease" onclick="decreaseScore(${index})">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="btn-icon remove" onclick="removePlayer(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tbody.appendChild(row);
