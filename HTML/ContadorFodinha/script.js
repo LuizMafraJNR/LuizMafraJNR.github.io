@@ -91,13 +91,18 @@ function resetPoints() {
     updateTable();
 }
 
+function firstToUpper(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 function updateTable() {
     const tbody = document.getElementById('playerTableBody');
     tbody.innerHTML = '';
     players.forEach((player, index) => {
         const row = document.createElement('tr');
+        const formattedName= firstToUpper(player.name);
         row.innerHTML = `
-            <td>${player.name}</td>
+            <td>${formattedName}</td>
             <td>${player.score}</td>
             <td>
                 <div class="d-flex justify-content-around flex-wrap">
@@ -152,7 +157,8 @@ function decreaseScore(index) {
     if (players[index].score > 0) {
         players[index].score -= 1;
         if (players[index].score === 0) {
-            alert(players[index].name + ' foi eliminado');
+            const formattedName = firstToUpper(players[index].name);
+            alert(formattedName + ' foi eliminado');
             removePlayer(index);
         }
     }
