@@ -32,15 +32,14 @@ document.getElementById('stopGameButton').addEventListener('click', function() {
 });
 
 let players = [];
+let matches = 0;
 let gameStarted = false;
-let timer;
-let seconds = 0;
 let canShowTable = false;
 let canPlay = false;
 
 function addPlayer(name) {
     const score = gameStarted ? 3 : 5;
-    const player = { name: name, score: score };
+    const player = { name: name, score: score, wins: 0 };
     players.push(player);
     if(players.length === 3 && !canPlay) {
         canPlay = true;
@@ -48,6 +47,16 @@ function addPlayer(name) {
     }
     updateTable();
     clearInput();
+}
+
+function showRankTableAndUpdate() {
+    if(matches > 0) {
+        const rankTable = document.getElementById('rankTable');
+        if (rankTable.style.display === 'none') {
+            rankTable.style.display = 'table';
+        } 
+        updateRankTable();
+    }
 }
 
 function showTable() {
@@ -65,35 +74,21 @@ function startGame() {
     gameStarted = true;
     document.getElementById('startGameButton').disabled = true;
     document.getElementById('stopGameButton').style.display = 'block';
-    startCounter();
 }
 
 function stopGame() {
     gameStarted = false;
+    matches += 1;
     setWinner();
     document.getElementById('startGameButton').disabled = false;
     document.getElementById('stopGameButton').style.display = 'none';
-    stopCounter();
     resetPoints();
+    showRankTableAndUpdate();
 }
 
 function resetPoints() {
     players.forEach(player => player.score = 5);
     updateTable();
-}
-
-function startCounter() {
-    timer = setInterval(() => {
-        seconds++;
-        document.getElementById('counter').innerText = `Tempo: ${seconds} segundos`;
-    }, 1000);
-
-}
-
-function stopCounter() {
-    clearInterval(timer);
-    seconds = 0;
-    document.getElementById('counter').innerText = '';
 }
 
 function updateTable() {
@@ -122,8 +117,25 @@ function updateTable() {
     });
 }
 
+function updateRankTable() {
+    const button = document.getElementById('rankingText');
+    if (button.style.display === 'none') {
+        button.style.display = 'block';
+    }
+    const rankTableBody = document.getElementById('rankTableBody');
+    rankTableBody.innerHTML = '';
+    players.sort((a, b) => b.wins - a.wins).forEach(player => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${player.wins}</td>
+        `;
+        rankTableBody.appendChild(row);
+    });
+}
+
 function validateIfGameIsStarted() {
-    if(gameStarted === false){
+    if (gameStarted === false) {
         alert('O jogo não foi iniciado');
         throw new Error('O jogo não foi iniciado');
     }
@@ -148,6 +160,7 @@ function decreaseScore(index) {
 }
 
 function removePlayer(index) {
+    validateIfGameIsStarted();
     players.splice(index, 1);
     updateTable();
 }
@@ -160,6 +173,7 @@ function setWinner() {
         let winnerNames = winners.map(player => player.name).join(', ');
         alert(`Empate entre ${winnerNames} com ${maxScore} pontos`);
     } else {
+        winners[0].wins += 1;
         alert(`O vencedor é ${winners[0].name} com ${winners[0].score} pontos`);
     }
 }

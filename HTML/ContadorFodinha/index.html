@@ -9,15 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container mt-5 ">
+    <div class="container mt-5">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Nome do jogador" aria-label="Nome do Jogador" aria-describedby="button-addon2" id="playerName">
             <button class="btn btn-outline-primary btn-sm-custom" type="button" id="button-addon2">Adicionar</button>
         </div>
         <div class="d-grid gap-2 col-6 mx-auto m-5">
-          <button class="btn btn-success" type="button" id="startGameButton">Iniciar Jogo</button>
+            <button class="btn btn-success" type="button" id="startGameButton">Iniciar Jogo</button>
         </div>
-        <div id="counter" class="m-lg-5 counter"></div>
         <div class="d-flex justify-content-center">
             <div class="table-responsive">
                 <table class="table text-center" id="playerTable" style="display: none;">
@@ -33,8 +32,29 @@
                 </table>
             </div>
         </div>
-        <button class="btn btn-outline-danger btn-sm-custom mt-3" type="button" id="stopGameButton" style="display: none;">Parar Jogo</button>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="btn btn-outline-danger btn-sm-custom" type="button" id="stopGameButton" style="display: none;">Parar Jogo</button>
+        </div>
+        
+        <div class="d-flex justify-content-center m-5">
+            <h4 id="rankingText" style="display: none;">Ranking de Vitórias</h4>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="table-responsive">
+                <table class="table text-center" id="rankTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Vitórias</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="rankTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
