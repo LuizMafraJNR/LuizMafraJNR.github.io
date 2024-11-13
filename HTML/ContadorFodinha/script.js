@@ -115,7 +115,7 @@ function updateTable() {
 }
 
 function validateIfGameIsStarted() {
-    if(!gameStarted){
+    if(gameStarted === false){
         alert('O jogo não foi iniciado');
         throw new Error('O jogo não foi iniciado');
     }
