@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Jogadores</title>
+    <title>Pontuador Fodinha</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
-    <style>
-        .table-responsive {
-            overflow-x: auto;
-        }
-        .btn-sm-custom {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            border-radius: 0.2rem;
-        }
-        .counter {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 1rem;
-        }
-    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -33,7 +18,7 @@
         <div id="counter" class="counter"></div>
 
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="playerTable" style="display: none;">
                 <thead>
                   <tr>
                     <th scope="col">Nome</th>
@@ -47,139 +32,6 @@
         </div>
         <button class="btn btn-outline-danger btn-sm-custom mt-3" type="button" id="stopGameButton" style="display: none;">Parar Jogo</button>
     </div>
-
-    <script>
-        
-        document.getElementById('button-addon2').addEventListener('click', function() {
-            const playerName = document.getElementById('playerName').value;
-            if (playerName) {
-                addPlayer(playerName);
-                document.getElementById('playerName').value = '';
-            }
-        });
-
-        document.getElementById('button-addon2').addEventListener('click', function(event) {
-            if (event.key === 'Enter')
-            addPlayer()
-        })
-
-        document.getElementById('playerName').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                let playerName = document.getElementById('playerName').value;
-                if (playerName) {
-                    addPlayer(playerName);
-                }
-                else {
-                    alert('Digite o nome do jogador');
-                }
-            }
-        })
-
-        document.getElementById('startGameButton').addEventListener('click', function() {
-            startGame();
-        });
-
-        document.getElementById('stopGameButton').addEventListener('click', function() {
-            stopGame();
-        });
-
-        let players = [];
-        let gameStarted = false;
-        let timer;
-        let seconds = 0;
-
-        function addPlayer(name) {
-            const score = gameStarted ? 3 : 5;
-            const player = { name: name, score: score };
-            players.push(player);
-            updateTable();
-            clearInput();
-        }
-        
-        function clearInput()
-        {
-            document.getElementById('playerName').value = '';
-        }
-
-        function startGame() {
-            gameStarted = true;
-            document.getElementById('startGameButton').disabled = true;
-            document.getElementById('stopGameButton').style.display = 'block';
-            startCounter();
-        }
-
-        function stopGame() {
-            gameStarted = false;
-            setWinner();
-            document.getElementById('startGameButton').disabled = false;
-            document.getElementById('stopGameButton').style.display = 'none';
-            stopCounter();
-            resetPoints();
-        }
-
-        function resetPoints() {
-            players.forEach(player => player.score = 5);
-            updateTable();
-        }
-
-        function startCounter() {
-            timer = setInterval(() => {
-                seconds++;
-                document.getElementById('counter').innerText = `Tempo: ${seconds} segundos`;
-            }, 1000);
-        }
-
-        function stopCounter() {
-            clearInterval(timer);
-            seconds = 0;
-            document.getElementById('counter').innerText = '';
-        }
-
-        function updateTable() {
-            const tbody = document.getElementById('playerTableBody');
-            tbody.innerHTML = '';
-            players.forEach((player, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${player.name}</td>
-                    <td>${player.score}</td>
-                    <td>
-                        <button class="btn btn-success btn-sm-custom" onclick="increaseScore(${index})">+</button>
-                        <button class="btn btn-warning btn-sm-custom" onclick="decreaseScore(${index})">-</button>
-                        <button class="btn btn-danger btn-sm-custom" onclick="removePlayer(${index})">X</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        function increaseScore(index) {
-            players[index].score += 1;
-            updateTable();
-        }
-
-        function decreaseScore(index) {
-            if (players[index].score > 0) {
-                players[index].score -= 1;
-                if (players[index].score === 0) {
-                    alert(players[index].name + ' foi eliminado');
-                    removePlayer(index);
-                }
-            }
-            updateTable();
-        }
-
-        function removePlayer(index) {
-            players.splice(index, 1);
-            updateTable();
-        }
-
-        function setWinner() {
-            let winner = players.map(player => player.score)
-            .indexOf(Math.max(...players.map(player => player.score)));
-            alert(`O vencedor é ${players[winner].name} com ${players[winner].score} pontos`);
-
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
