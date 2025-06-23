@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Completo de Treinos - 7 Dias</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        color: #4a5568;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .day-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      .day-btn {
+        padding: 15px 10px;
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+        color: #4a5568;
+      }
+
+      .day-btn.active {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .day-btn.rest {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+      }
+
+      .workout-info {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .timer-display {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .timer-display h2 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      .progress-bar {
+        background: #e2e8f0;
+        height: 12px;
+        border-radius: 6px;
+        margin: 20px 0;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .exercise-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .exercise-card.active {
+        border: 3px solid #4facfe;
+        transform: scale(1.02);
+      }
+
+      .exercise-card.completed {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+      }
+
+      .exercise-card.hidden {
+        display: none;
+      }
+
+      .exercise-title {
+        font-size: 1.6em;
+        color: #2d3748;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .exercise-card.completed .exercise-title {
+        color: white;
+      }
+
+      .exercise-steps {
+        display: grid;
+        gap: 12px;
+        margin: 15px 0;
+      }
+
+      .step {
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 8px;
+        border-left: 4px solid #4facfe;
+      }
+
+      .exercise-card.completed .step {
+        background: rgba(255, 255, 255, 0.2);
+        border-left: 4px solid white;
+        color: white;
+      }
+
+      .rep-counter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin: 20px 0;
+        font-size: 1.3em;
+      }
+
+      .rep-display {
+        background: #4facfe;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.5em;
+        min-width: 70px;
+        text-align: center;
+      }
+
+      .control-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+      }
+
+      .btn-secondary:hover {
+        background: #cbd5e0;
+      }
+
+      .rest-timer {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .rest-timer.active {
+        display: block;
+      }
+
+      .motivation {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      .final-celebration {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        display: none;
+      }
+
+      .final-celebration.show {
+        display: block;
+      }
+
+      .rest-day {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .workout-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 1.8em;
+        }
+
+        .timer-display h2 {
+          font-size: 2em;
+        }
+
+        .day-selector {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .control-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏋️ Sistema Completo de Treinos</h1>
+        <p>Protocolo Inteligente - 7 Dias da Semana</p>
+      </div>
+
+      <div class="day-selector">
+        <button class="day-btn active" onclick="selectDay(1)">
+          <strong>SEG</strong><br />
+          <small>Força Joelho</small>
+        </button>
+        <button class="day-btn" onclick="selectDay(2)">
+          <strong>TER</strong><br />
+          <small>Equilíbrio</small>
+        </button>
+        <button class="day-btn rest" onclick="selectDay(3)">
+          <strong>QUA</strong><br />
+          <small>Descanso</small>
+        </button>
+        <button class="day-btn" onclick="selectDay(4)">
+          <strong>QUI</strong><br />
+          <small>Força Máx</small>
+        </button>
+        <button class="day-btn" onclick="selectDay(5)">
+          <strong>SEX</strong><br />
+          <small>Funcional</small>
+        </button>
+        <button class="day-btn rest" onclick="selectDay(6)">
+          <strong>SAB</strong><br />
+          <small>Teste</small>
+        </button>
+        <button class="day-btn rest" onclick="selectDay(7)">
+          <strong>DOM</strong><br />
+          <small>Regeneração</small>
+        </button>
+      </div>
+
+      <div class="workout-info" id="workoutInfo">
+        <h3 id="dayTitle">Segunda-feira - Protocolo de Força do Joelho</h3>
+        <p id="dayDescription">
+          Foco na ativação e fortalecimento do quadríceps
+        </p>
+      </div>
+
+      <div class="timer-display" id="timerDisplay">
+        <h2 id="sessionTimer">00:00</h2>
+        <p id="timerLabel">Tempo da sessão</p>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+
+      <div class="workout-stats" id="workoutStats">
+        <div class="stat-card">
+          <strong>Exercícios</strong><br />
+          <span id="exerciseCount">4</span>
+        </div>
+        <div class="stat-card">
+          <strong>Tempo Est.</strong><br />
+          <span id="estimatedTime">20 min</span>
+        </div>
+        <div class="stat-card">
+          <strong>Completados</strong><br />
+          <span id="completedCount">0</span>
+        </div>
+      </div>
+
+      <div id="exerciseContainer"></div>
+
+      <div class="rest-timer" id="restTimer">
+        <h3>😴 Descanso</h3>
+        <h2 id="restCount">60</h2>
+        <p>segundos para o próximo exercício</p>
+      </div>
+
+      <div class="motivation" id="motivation">
+        💪 Vamos começar! Cada movimento fortalece seu joelho!
+      </div>
+
+      <div class="final-celebration" id="celebration">
+        <h2>🎉 TREINO CONCLUÍDO!</h2>
+        <h3 id="celebrationTitle">Excelente trabalho hoje!</h3>
+        <div class="workout-stats">
+          <div class="stat-card">
+            <strong>Tempo Total</strong><br />
+            <span id="finalTime">--:--</span>
+          </div>
+          <div class="stat-card">
+            <strong>Exercícios</strong><br />
+            <span id="finalExercises">4/4</span>
+          </div>
+        </div>
+        <p><strong>Próximos passos:</strong></p>
+        <p>✅ Aplique gelo no joelho por 15 minutos</p>
+        <p>✅ Hidrate-se bem</p>
+        <p>✅ Anote como se sentiu</p>
+        <button class="btn btn-primary" onclick="resetWorkout()">
+          Novo Treino
+        </button>
+      </div>
+
+      <div class="rest-day" id="restDay" style="display: none">
+        <h2>🧘 Dia de Recuperação</h2>
+        <h3 id="restTitle">Descanso Ativo</h3>
+        <div class="workout-stats">
+          <div class="stat-card">
+            <strong>Caminhada</strong><br />
+            <span>15-20 min</span>
+          </div>
+          <div class="stat-card">
+            <strong>Alongamento</strong><br />
+            <span>10 min</span>
+          </div>
+          <div class="stat-card">
+            <strong>Gelo</strong><br />
+            <span>15 min</span>
+          </div>
+        </div>
+        <p id="restDescription">
+          Movimentos suaves para manter a circulação ativa
+        </p>
+        <button class="btn btn-primary" onclick="markRestComplete()">
+          Marcar como Concluído
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const workoutData = {
+        1: {
+          title: "Segunda-feira - Protocolo de Força do Joelho",
+          description: "Foco na ativação e fortalecimento do quadríceps",
+          estimatedTime: "50 min",
+          exercises: [
+            {
+              title: "💪 Contração de Quadríceps MÁXIMA",
+              steps: [
+                "Sente numa cadeira, pernas estendidas à frente",
+                "Contraia o quadríceps COM FORÇA MÁXIMA por 10-15 segundos",
+                "Relaxe 3 segundos, repita o movimento",
+              ],
+              reps: 20,
+              sets: 4,
+            },
+            {
+              title: "🦵 Elevação da Perna RESISTIDA",
+              steps: [
+                "Deitado de costas, perna operada estendida",
+                "Eleve a perna RETA, contraia glúteo simultaneamente",
+                "2 segundos para subir, 3 segundos para descer",
+              ],
+              reps: 15,
+              sets: 4,
+            },
+            {
+              title: "🔄 Deslizamento do Calcanhar CONTROLADO",
+              steps: [
+                "Deitado de costas, pernas estendidas",
+                "Deslize calcanhar dobrando joelho DEVAGAR",
+                "3 segundos para dobrar, 3 segundos para estender",
+              ],
+              reps: 20,
+              sets: 4,
+            },
+            {
+              title: "🔥 Isometria de Quadríceps na Parede",
+              steps: [
+                "Costas encostadas na parede, pés a 30cm da parede",
+                "Deslize até 45° (meio agachamento)",
+                "FORCE ambos os quadríceps por 20-30 segundos",
+              ],
+              reps: 30,
+              sets: 3,
+              isTimer: true,
+            },
+          ],
+        },
+        2: {
+          title: "Terça-feira - Equilíbrio e Propriocepção",
+          description: "Treino de estabilidade e controle neuromuscular",
+          estimatedTime: "40 min",
+          exercises: [
+            {
+              title: "⚖️ Equilíbrio DESAFIADOR",
+              steps: [
+                "Em pé, apoie-se na perna operada",
+                "Mantenha equilíbrio (use parede se necessário)",
+                "Evolua: olhos fechados → movimentos de braços",
+              ],
+              reps: 45,
+              sets: 3,
+              isTimer: true,
+            },
+            {
+              title: "🦵 Marcha Estacionária CONTROLADA",
+              steps: [
+                "Simule caminhada no lugar",
+                "Controle o impacto, levante bem os joelhos",
+                "Mantenha ritmo constante",
+              ],
+              reps: 60,
+              sets: 3,
+              isTimer: true,
+            },
+            {
+              title: "🔄 Panturrilha em Pé",
+              steps: [
+                "Em pé com apoio, pés paralelos",
+                "Eleve-se nas pontas dos pés",
+                "2 segundos para subir, 2 para descer",
+              ],
+              reps: 20,
+              sets: 3,
+            },
+          ],
+        },
+        4: {
+          title: "Quinta-feira - Força MÁXIMA do Joelho",
+          description: "Protocolo intensivo de fortalecimento",
+          estimatedTime: "60 min",
+          exercises: [
+            {
+              title: "💪 Contração de Quadríceps MÁXIMA",
+              steps: [
+                "Sente numa cadeira, pernas estendidas",
+                "Contraia COM FORÇA TOTAL por 15 segundos",
+                "Deve 'queimar' o músculo",
+              ],
+              reps: 20,
+              sets: 4,
+            },
+            {
+              title: "🦵 Elevação da Perna com PESO",
+              steps: [
+                "Deitado, adicione garrafa d'água no tornozelo",
+                "Eleve a perna RETA controlando o peso",
+                "Movimento super controlado",
+              ],
+              reps: 15,
+              sets: 4,
+            },
+            {
+              title: "⚡ Contrações Rápidas (Power)",
+              steps: [
+                "Sentado, pernas estendidas",
+                "Contrações EXPLOSIVAS do quadríceps (1 segundo)",
+                "Relaxe 2 segundos, repita",
+              ],
+              reps: 15,
+              sets: 4,
+            },
+            {
+              title: "🦵 Mini Agachamento UNILATERAL",
+              steps: [
+                "Apoio na perna operada, use cadeira se necessário",
+                "Flexione joelho operado 20-30°",
+                "2 segundos para descer, 2 para subir",
+              ],
+              reps: 10,
+              sets: 3,
+            },
+          ],
+        },
+        5: {
+          title: "Sexta-feira - Integração Funcional",
+          description: "Movimentos coordenados e funcionais",
+          estimatedTime: "55 min",
+          exercises: [
+            {
+              title: "🏋️ Ponte de Glúteo INTENSA",
+              steps: [
+                "Deitado, pés apoiados, joelhos flexionados",
+                "Eleve o quadril contraindo FORTE os glúteos",
+                "Mantenha 3 segundos no topo",
+              ],
+              reps: 15,
+              sets: 3,
+            },
+            {
+              title: "💪 Flexões Adaptadas",
+              steps: [
+                "Flexões de joelhos ou inclinadas na parede",
+                "Movimento controlado, força nos braços",
+                "2 segundos para descer, 1 para subir",
+              ],
+              reps: 12,
+              sets: 3,
+            },
+            {
+              title: "🔥 Prancha Isométrica",
+              steps: [
+                "Posição de prancha (adaptada se necessário)",
+                "Mantenha corpo reto, abdome contraído",
+                "Respiração controlada",
+              ],
+              reps: 30,
+              sets: 3,
+              isTimer: true,
+            },
+            {
+              title: "⚖️ Equilíbrio com Movimentos",
+              steps: [
+                "Apoio na perna operada",
+                "Faça movimentos com os braços",
+                "Desafie seu equilíbrio progressivamente",
+              ],
+              reps: 45,
+              sets: 3,
+              isTimer: true,
+            },
+          ],
+        },
+      };
+
+      const restDays = {
+        3: {
+          title: "Quarta-feira - Descanso Ativo",
+          description: "Movimentos suaves para manter a circulação ativa",
+        },
+        6: {
+          title: "Sábado - Teste de Força",
+          description: "Avaliação semanal do progresso",
+        },
+        7: {
+          title: "Domingo - Regeneração Completa",
+          description: "Recuperação total para a próxima semana",
+        },
+      };
+
+      let currentDay = 1;
+      let currentExercise = 0;
+      let currentReps = [];
+      let sessionStartTime;
+      let sessionInterval;
+      let exerciseTimers = {};
+      let isWorkoutActive = false;
+
+      function selectDay(day) {
+        document
+          .querySelectorAll(".day-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        currentDay = day;
+        currentExercise = 0;
+        currentReps = [];
+
+        clearInterval(sessionInterval);
+
+        if (workoutData[day]) {
+          showWorkoutDay(day);
+        } else if (restDays[day]) {
+          showRestDay(day);
+        }
+      }
+
+      function showWorkoutDay(day) {
+        const data = workoutData[day];
+
+        document.getElementById("restDay").style.display = "none";
+        document.getElementById("workoutInfo").style.display = "block";
+        document.getElementById("timerDisplay").style.display = "block";
+        document.getElementById("workoutStats").style.display = "grid";
+
+        document.getElementById("dayTitle").textContent = data.title;
+        document.getElementById("dayDescription").textContent =
+          data.description;
+        document.getElementById("exerciseCount").textContent =
+          data.exercises.length;
+        document.getElementById("estimatedTime").textContent =
+          data.estimatedTime;
+        document.getElementById("completedCount").textContent = "0";
+
+        document.getElementById("sessionTimer").textContent = "00:00";
+        document.getElementById("timerLabel").textContent =
+          'Clique "Iniciar" para começar';
+
+        generateExercises(data.exercises);
+
+        document.getElementById("progressBar").style.width = "0%";
+        updateMotivation();
+      }
+
+      function showRestDay(day) {
+        const data = restDays[day];
+
+        document.getElementById("workoutInfo").style.display = "none";
+        document.getElementById("timerDisplay").style.display = "none";
+        document.getElementById("workoutStats").style.display = "none";
+        document.getElementById("exerciseContainer").innerHTML = "";
+        document.getElementById("restDay").style.display = "block";
+
+        document.getElementById("restTitle").textContent = data.title;
+        document.getElementById("restDescription").textContent =
+          data.description;
+      }
+
+      function generateExercises(exercises) {
+        const container = document.getElementById("exerciseContainer");
+        container.innerHTML = "";
+        currentReps = new Array(exercises.length).fill(0);
+
+        const startBtn = document.createElement("div");
+        startBtn.className = "exercise-card";
+        startBtn.innerHTML = `
+                <div class="exercise-title">
+                    <span>🚀</span> Pronto para começar?
+                </div>
+                <div class="control-buttons">
+                    <button class="btn btn-primary" onclick="startWorkout()">Iniciar Treino</button>
+                </div>
+            `;
+        container.appendChild(startBtn);
+
+        exercises.forEach((exercise, index) => {
+          const card = document.createElement("div");
+          card.className = "exercise-card hidden";
+          card.id = `exercise${index}`;
+
+          const steps = exercise.steps
+            .map((step) => `<div class="step">${step}</div>`)
+            .join("");
+
+          const repControl = exercise.isTimer
+            ? `<div class="rep-counter">
+                        <div class="rep-display" id="timer${index}">00:00</div>
+                    </div>
+                    <div class="control-buttons">
+                        <button class="btn btn-primary" id="timerBtn${index}" onclick="toggleTimer(${index})">Iniciar</button>
+                        <button class="btn btn-success" onclick="completeExercise(${index})">Concluir</button>
+                    </div>`
+            : `<div class="rep-counter">
+                        <button class="btn btn-secondary" onclick="changeReps(${index}, -1)">-</button>
+                        <div class="rep-display" id="reps${index}">0/${exercise.reps}</div>
+                        <button class="btn btn-secondary" onclick="changeReps(${index}, 1)">+</button>
+                    </div>
+                    <div class="control-buttons">
+                        <button class="btn btn-primary" onclick="nextExercise(${index})">Próximo</button>
+                    </div>`;
+
+          card.innerHTML = `
+                    <div class="exercise-title">
+                        <span>💪</span> ${exercise.title}
+                    </div>
+                    <div class="exercise-steps">
+                        ${steps}
+                    </div>
+                    ${repControl}
+                `;
+
+          container.appendChild(card);
+        });
+      }
+
+      function startWorkout() {
+        isWorkoutActive = true;
+        sessionStartTime = Date.now();
+
+        document.querySelector(".exercise-card").classList.add("hidden");
+        document.getElementById("exercise0").classList.remove("hidden");
+        document.getElementById("exercise0").classList.add("active");
+
+        sessionInterval = setInterval(updateSessionTimer, 1000);
+        document.getElementById("timerLabel").textContent = "Tempo da sessão";
+
+        updateMotivation();
+      }
+
+      function updateSessionTimer() {
+        const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById("sessionTimer").textContent = `${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      function changeReps(exerciseIndex, change) {
+        const data = workoutData[currentDay];
+        const maxReps =
+          data.exercises[exerciseIndex].reps *
+          data.exercises[exerciseIndex].sets;
+
+        currentReps[exerciseIndex] = Math.max(
+          0,
+          Math.min(maxReps, currentReps[exerciseIndex] + change)
+        );
+        document.getElementById(
+          `reps${exerciseIndex}`
+        ).textContent = `${currentReps[exerciseIndex]}/${maxReps}`;
+
+        updateProgress();
+        updateMotivation();
+      }
+
+      function toggleTimer(exerciseIndex) {
+        const btn = document.getElementById(`timerBtn${exerciseIndex}`);
+
+        if (btn.textContent === "Iniciar") {
+          startExerciseTimer(exerciseIndex);
+          btn.textContent = "Parar";
+          btn.className = "btn btn-secondary";
+        } else {
+          stopExerciseTimer(exerciseIndex);
+          btn.textContent = "Iniciar";
+          btn.className = "btn btn-primary";
+        }
+      }
+
+      function startExerciseTimer(exerciseIndex) {
+        let seconds = 0;
+        const interval = setInterval(() => {
+          seconds++;
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          document.getElementById(`timer${exerciseIndex}`).textContent = `${mins
+            .toString()
+            .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        }, 1000);
+
+        exerciseTimers[exerciseIndex] = interval;
+      }
+
+      function stopExerciseTimer(exerciseIndex) {
+        if (exerciseTimers[exerciseIndex]) {
+          clearInterval(exerciseTimers[exerciseIndex]);
+          delete exerciseTimers[exerciseIndex];
+        }
+      }
+
+      function completeExercise(exerciseIndex) {
+        stopExerciseTimer(exerciseIndex);
+
+        document
+          .getElementById(`exercise${exerciseIndex}`)
+          .classList.add("completed");
+        document
+          .getElementById(`exercise${exerciseIndex}`)
+          .classList.remove("active");
+
+        currentReps[exerciseIndex] = 1;
+        updateProgress();
+
+        nextExercise(exerciseIndex);
+      }
+
+      function nextExercise(exerciseIndex) {
+        const data = workoutData[currentDay];
+
+        if (!data.exercises[exerciseIndex].isTimer) {
+          const maxReps =
+            data.exercises[exerciseIndex].reps *
+            data.exercises[exerciseIndex].sets;
+          if (currentReps[exerciseIndex] < maxReps) {
+            if (
+              !confirm(
+                `Você fez ${currentReps[exerciseIndex]}/${maxReps} repetições. Continuar mesmo assim?`
+              )
+            ) {
+              return;
+            }
+          }
+        }
+
+        document
+          .getElementById(`exercise${exerciseIndex}`)
+          .classList.add("completed");
+        document
+          .getElementById(`exercise${exerciseIndex}`)
+          .classList.remove("active");
+
+        if (exerciseIndex >= data.exercises.length - 1) {
+          finishWorkout();
+          return;
+        }
+
+        showRestTimer(() => {
+          document
+            .getElementById(`exercise${exerciseIndex}`)
+            .classList.add("hidden");
+          document
+            .getElementById(`exercise${exerciseIndex + 1}`)
+            .classList.remove("hidden");
+          document
+            .getElementById(`exercise${exerciseIndex + 1}`)
+            .classList.add("active");
+          currentExercise = exerciseIndex + 1;
+        });
+      }
+
+      function showRestTimer(callback) {
+        document.getElementById("restTimer").classList.add("active");
+        let restTime = 60;
+
+        const restInterval = setInterval(() => {
+          document.getElementById("restCount").textContent = restTime;
+          restTime--;
+
+          if (restTime < 0) {
+            clearInterval(restInterval);
+            document.getElementById("restTimer").classList.remove("active");
+            callback();
+          }
+        }, 1000);
+      }
+
+      function updateProgress() {
+        const data = workoutData[currentDay];
+        if (!data) return;
+
+        let totalProgress = 0;
+        currentReps.forEach((reps, index) => {
+          const exercise = data.exercises[index];
+          if (exercise.isTimer) {
+            totalProgress += reps > 0 ? 100 / data.exercises.length : 0;
+          } else {
+            const maxReps = exercise.reps * exercise.sets;
+            totalProgress += (reps / maxReps) * (100 / data.exercises.length);
+          }
+        });
+
+        document.getElementById("progressBar").style.width =
+          Math.min(100, totalProgress) + "%";
+
+        const completed = currentReps.filter((reps, index) => {
+          const exercise = data.exercises[index];
+          if (exercise.isTimer) {
+            return reps > 0;
+          } else {
+            return reps >= exercise.reps * exercise.sets;
+          }
+        }).length;
+
+        document.getElementById("completedCount").textContent = completed;
+      }
+
+      function updateMotivation() {
+        const messages = [
+          "💪 Cada repetição fortalece seu joelho!",
+          "🔥 Excelente controle muscular!",
+          "⚡ Seu joelho está ficando mais forte!",
+          "🎯 Foco total na recuperação!",
+          "🚀 Você está no caminho certo!",
+          "💯 Movimento perfeito!",
+          "⭐ Sua dedicação está dando resultado!",
+        ];
+
+        const randomMessage =
+          messages[Math.floor(Math.random() * messages.length)];
+        document.getElementById("motivation").textContent = randomMessage;
+      }
+
+      function finishWorkout() {
+        clearInterval(sessionInterval);
+
+        Object.values(exerciseTimers).forEach((timer) => clearInterval(timer));
+        exerciseTimers = {};
+
+        document
+          .querySelectorAll(".exercise-card")
+          .forEach((card) => card.classList.add("hidden"));
+
+        const finalTime = document.getElementById("sessionTimer").textContent;
+        document.getElementById("finalTime").textContent = finalTime;
+        document.getElementById(
+          "finalExercises"
+        ).textContent = `${workoutData[currentDay].exercises.length}/${workoutData[currentDay].exercises.length}`;
+        document.getElementById("celebration").classList.add("show");
+
+        saveWorkoutProgress();
+      }
+
+      function saveWorkoutProgress() {
+        const progress = {
+          date: new Date().toLocaleDateString(),
+          day: currentDay,
+          workoutType: workoutData[currentDay].title,
+          duration: document.getElementById("sessionTimer").textContent,
+          exercises: currentReps,
+          completed: true,
+        };
+
+        let workoutHistory = JSON.parse(
+          localStorage.getItem("workoutHistory") || "[]"
+        );
+        workoutHistory.push(progress);
+        localStorage.setItem("workoutHistory", JSON.stringify(workoutHistory));
+      }
+
+      function resetWorkout() {
+        clearInterval(sessionInterval);
+        Object.values(exerciseTimers).forEach((timer) => clearInterval(timer));
+        exerciseTimers = {};
+
+        document.getElementById("celebration").classList.remove("show");
+        currentExercise = 0;
+        currentReps = [];
+        isWorkoutActive = false;
+
+        selectDay(currentDay);
+      }
+
+      function markRestComplete() {
+        document.getElementById("restDay").innerHTML +=
+          '<div style="margin-top: 20px;"><h3>✅ Dia Concluído!</h3><p>Ótimo trabalho na recuperação!</p></div>';
+      }
+
+      function initializeApp() {
+        const today = new Date().getDay();
+        const dayMapping = [7, 1, 2, 3, 4, 5, 6];
+        const currentDayOfWeek = dayMapping[today];
+
+        setTimeout(() => {
+          const todayBtn =
+            document.querySelectorAll(".day-btn")[currentDayOfWeek - 1];
+          if (todayBtn) {
+            todayBtn.click();
+          }
+        }, 500);
+      }
+
+      initializeApp();
+    </script>
+  </body>
+</html>
